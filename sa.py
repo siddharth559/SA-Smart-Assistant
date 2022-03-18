@@ -241,15 +241,17 @@ screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
 
 WIDTH = int(screen_width//2.723404255319149)
-HEIGHT = int(screen_height//1.7066666666666668+1)
+HEIGHT = int(screen_height//1.7066666666666668+1) 
 
 sw = int(screen_width) - int((WIDTH*1.0425531914893618)//1)
 sh = int(screen_height) - int((HEIGHT*0.13333333333333333)//1)
 
-if OS_NAME!='Windows': sh -= HEIGHT  #LINUX SECURITY DOESN'T ALLOW PROGRAMS TO BE PLACED SO LOW IN THE SCREEN
+to_be_subtracted = int(HEIGHT*0.9777777777777777) if OS_NAME == 'Windows' else 0
+
+if OS_NAME!='Windows': sh -= HEIGHT  #UNIX SECURITY DOESN'T ALLOW PROGRAMS TO BE PLACED SO LOW IN THE SCREEN
 
 
-root.geometry("{}x{}+{}+{}".format(WIDTH,HEIGHT,sw,sh)) #470*450
+root.geometry("{}x{}+{}+{}".format(WIDTH,HEIGHT-to_be_subtracted,sw,sh)) #470*450
 root.columnconfigure(6, {'minsize':130})
 root.withdraw()
 
@@ -335,14 +337,16 @@ al=0.50 if OS_NAME=='Windows' else 1
 
 root.wm_attributes('-alpha',al)
 if OS_NAME != 'Linux':root.overrideredirect('True')
-def check():
+def check(RET_LIST=None):
     global an
     global sh
     an=root.geometry()
-    a=an[12]
-    a+=an[13]
-    a+=an[14]
-    return str(a)
+    a = an.split('x')
+    a = [a[0]]+a[1].split('+')
+    if RET_LIST:
+        return a
+    else:
+        return a[3]
 def actu():
     global al
     global an
@@ -350,34 +354,36 @@ def actu():
     if OS_NAME == 'Windows':
         a=False        
         if int(check())<int((HEIGHT//1.6544117647058822)):  #272
-            for i in range(0,int(HEIGHT*0.9777777777777777)//1):  ##440
+            for i in range(0,int(HEIGHT*0.9777777777777777)):  ##440
                 if i>=300:
                     a=True
-                b_=check()
-                b=int(b_)
-                b+=1
+                b=check(3)
+                b[3]= str(int(b[3])+1)
+                b[1]= str(int(b[1])-1)
                 al=al-h_diff
-                an_=an[:12]+str(b)
+                b = b[0]+'x'+b[1]+'+'+b[2]+'+'+b[3]
                 root.wm_attributes('-alpha',al)
-                root.geometry(an_)
+                root.geometry(b)
                 root.update()
+                
                 if a==True:
                     time.sleep(0)
                 if a==False:
                     time.sleep(0)
             #root.attributes('-topmost',0)
         else:
-            for i in range(0,int(HEIGHT*0.9777777777777777)//1):
+            for i in range(0,int(HEIGHT*0.9777777777777777)):
                 if i>=300:
                     a=True
-                b_=check()
-                b=int(b_)
-                b-=1
+                b=check(3)
+                b[3]= str(int(b[3])-1)
+                b[1]= str(int(b[1])+1)
                 al=al+h_diff
-                an_=an[:12]+str(b)
+                b = b[0]+'x'+b[1]+'+'+b[2]+'+'+b[3]
                 root.wm_attributes('-alpha',al)
-                root.geometry(an_)
+                root.geometry(b)
                 root.update()
+
                 if a==True:
                     time.sleep(0)
                 if a==False:
