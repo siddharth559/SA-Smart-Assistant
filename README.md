@@ -2,9 +2,9 @@
 SA (abbreviation of smart assistant) is a free and open source cross platform virtual assistant. It is built to run on Windows Linux and mac(yet to be tested). SA can open software, do Google and Wikipedia searches, search find word meanings and several other functionaries. It also has speech recognition facilities making it almost fingerless interface.
 
 Standalone portable applications are available only for windows and linux 64bit systems:
-windows : https://github.com/siddharth559/SA-Smart-Assistant/releases/download/v1.0.1/sa.zip
-linux : https://github.com/siddharth559/SA-Smart-Assistant/releases/download/v1.0.1/sa_linux.zip
-alternatively you can download the source code at: https://github.com/siddharth559/SA-Smart-Assistant/releases/tag/v1.0.1 
+windows : https://github.com/siddharth559/SA-Smart-Assistant/releases/download/v1.0.2/sa.zip
+linux : https://github.com/siddharth559/SA-Smart-Assistant/releases/download/v1.0.2/sa_linux.zip
+alternatively you can download the source code at: https://github.com/siddharth559/SA-Smart-Assistant/releases/tag/v1.0.2 
 
 After downloading extract the zip files, inside them you will find sa.exe(win)/sa(linux); click on it. Linux peeps might have to open in terminal and type./sa to launch
 
