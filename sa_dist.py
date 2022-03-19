@@ -603,7 +603,6 @@ def speech():
     root.update()
     n2.delete(0,tk.END)
     main(dy)
-    
             
 
 
@@ -1056,14 +1055,11 @@ def main(n):  #main function of the software does everything
     elif n==("maths"):
         addbt(n)
         L.configure(text="i can calculate the roots of quadratic equations\ndo summetions\n do integrations ")
-        if OS_NAME == 'Windows':os.popen('.'+sepr+'calculator_SA.py')
-        else: os.system('python3 calculator_SA.py')
+        os.popen('.'+sepr+'calculator_SA.exe')
     elif n == 'timer':
         addbt(n)
         L.configure(text='lets keep up with time')
-        if OS_NAME == 'Windows':os.popen('.'+sepr+'timer_SA.py')
-        else: os.system('python3 timer_SA.py')
-
+        os.popen('.'+sepr+'timer_SA.exe')
     
     elif n==("games") or n==("i want to play games") or n==("Games") or n==("games ") or n==("Games "):
         addbt("games")
@@ -1532,8 +1528,7 @@ def main(n):  #main function of the software does everything
         #################################################################################                    
         def space():
             gam.destroy()
-            if OS_NAME == 'Windows': os.popen('turtlegame.py')
-            else: os.system('python3 turtlegame.py')
+            os.popen('.'+sepr+'turtlegame.exe')
         ##############################################################################                    
         tic=tk.PhotoImage(file="gameimg.png")
         ball=tk.PhotoImage(file="ball.png")
