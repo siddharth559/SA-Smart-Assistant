@@ -40,9 +40,8 @@ try:
     import speech_recognition as sr
     r=sr.Recognizer()
     import pyaudio
-    import pocketsphinx
 except:
-    #print("kindly install python speech recognition, pyaudio, pocketsphinx\nfor the best use of the software")
+    #print("kindly install python speech recognition, pyaudio\nfor the best use of the software")
     pass
 
 import math
@@ -150,15 +149,15 @@ def edit():
     editentry1.grid(row=1,column=2)
     strval=tk.StringVar(edi)
     strval.set('tell')
-    editl2=tk.Label(edi, text='tell\n SA will only give talk with you or answer the command\n enter what to anser you for this command')
+    editl2=tk.Label(edi, text='TELL\n SA will only answer the command.\n Enter what to answer you for this command')
     editl2.grid(row=3,column=2)
     def changelab(val):
         if val=='tell':
-            editl2.config(text='tell\n SA will only give talk with you or answer the command\n enter what to anser you for this command')
+            editl2.config(text='TELL\n SA will only answer the command\n enter what to anser you for this command')
         elif val=='open':
-            editl2.config(text='in this SA will open any directory or file for you\n enter the path in the entry box in the format ...\...\...\n for example C:\Windows\Python')
+            editl2.config(text='In this SA will open any file for you\n enter the path in the entry box in the format ...\...\...\n for example C:\Windows\Python')
         elif val=='sa command':
-            editl2.config(text="this assign enter a sa command\n when you enter the _new_  command the old command will execute\n for example if you enter 'hex' as _new_command and 'whatsup' as old command then when you write hex in SA\n SA will tell the answer it used to tell in case of whatsup ie 'chilling dude'")
+            editl2.config(text="Use this if you want to replace any old command by a new one. \nWhen you enter the _new_  command the old command will execute\n for example if you enter 'hex' as _new_command and 'open chrome' as old command, then when you write hex in SA\n SA will open chrome")
 
     editmenu=tk.OptionMenu(edi, strval, *('tell','open','sa command'), command=changelab)
     editmenu.grid(row=2,column=1)
