@@ -1054,11 +1054,19 @@ def main(n):  #main function of the software does everything
     elif n==("maths"):
         addbt(n)
         L.configure(text="i can calculate the roots of quadratic equations\ndo summetions\n do integrations ")
-        os.popen('.'+sepr+'calculator_SA.exe')
+        if OS_NAME== "Windows": os.popen('.'+sepr+'calculator_SA.exe')
+        else: 
+            if os.system("./calculator_SA"): 
+                os.system("chmod +x ./calculator_SA") 
+                os.system("./calculator_SA") 
     elif n == 'timer':
         addbt(n)
         L.configure(text='lets keep up with time')
-        os.popen('.'+sepr+'timer_SA.exe')
+        if OS_NAME== "Windows": os.popen('.'+sepr+'timer_SA.exe')
+        else: 
+            if os.system("./timer_SA"): 
+                os.system("chmod +x ./timer_SA") 
+                os.system("./timer_SA") 
     
     elif n==("games") or n==("i want to play games") or n==("Games") or n==("games ") or n==("Games "):
         addbt("games")
@@ -1527,7 +1535,11 @@ def main(n):  #main function of the software does everything
         #################################################################################                    
         def space():
             gam.destroy()
-            os.popen('.'+sepr+'turtlegame.exe')
+            if OS_NAME== "Windows": os.popen('.'+sepr+'turtlegame.exe')
+            else: 
+                if os.system("./turtlegame"): 
+                    os.system("chmod +x ./turtlegame") 
+                    os.system("./turtlegame")
         ##############################################################################                    
         tic=tk.PhotoImage(file="gameimg.png")
         ball=tk.PhotoImage(file="ball.png")
@@ -1789,102 +1801,7 @@ def main(n):  #main function of the software does everything
             C.update()
             root.update()
             C.config(scrollregion=C.bbox('all'))
-            '''
-            if len(result)>=0:
-                result = []
-            #try:
-            ask=0
-            if "what is" in n:
-                addbt(n)
-                L.configure(text=" ")
-                search=n.replace('what is ','')
-            elif "who is" in n:
-                addbt(n)
-                L.configure(text=" ")
-                search=n.replace('who is ','')
-            elif "where is" in n:
-                addbt(n)
-                L.configure(text=" ")
-                search=n.replace('where is ','')
-            else:
-                pass
-            search=search.title()
-            search=search.replace(" ","_")
-            if checkinfo(search)==1:
-                k1=getresult(search)
-            else:
-                wiki_parser = MyHTMLParser()
-                req = ur.Request(("https://en.wikipedia.org/wiki/"+str(search)), headers={'User-Agent': 'chrome.exe'})
-                string=req
-                a_=ur.urlopen(string)
-                n_=str(a_.read())
-                wiki_parser.feed(n_)
-                for i in result:
-                    if '\n' in i:
-                        i.replace('\n','')
-                    if "pronunciation" in i:
-                        result.remove(i)
-                    if i.count('x')>=2:
-                        result.remove(i)
-                ret = ''.join(result)
-                ki = ret
-                k1=ki[:40]
-                k1=k1#+'\n'
-                k1+=ki[40:80]
-                #k1+='\n'
-                k1+=ki[80:120]
-                #k1+='\n'
-                k1+=ki[120:160]
-                #k1+='\n'
-                k1+=ki[160:200]
-                #k1+='\n'
-                storeinfo(search, k1)
-                wiki_parser.close()####
-
-            C.grid(row=10,column=0)
-            scc.grid(row=10,column=1,sticky=tk.N+tk.S)
-            frame=tk.Frame(C, bg='yellow')                
             
-
-            def whatwherewho():
-                webbrowser.open("https://en.wikipedia.org/wiki/"+str(search))
-                L.configure(text="let me search")
-                try:
-                    newbutton.grid_forget()
-                    closebut.grid_forget()
-                except:
-                    pass
-            frame=tk.Frame(C, bg='yellow')
-
-            #the button that comes while wikepedia searching
-            newbutton=tk.Button(frame, text="",bg="yellow", height=8, width=50, wraplength=300)
-            newbutton.grid(row=0,column=0, columnspan=4, rowspan=6, stick = tk.W+tk.E)
-            newbutton.configure(text=str(k1)+".......wikipedia", command=whatwherewho)
-
-            def closing():
-                C.grid_forget()
-
-            closebut=tk.Button(frame, text="close", fg="white", bg="red")#but comes along with the newbutton
-            closebut.configure(command=closing)
-            closebut.grid(row=6, column=0, stick=tk.S+tk.E)
-
-            try:
-                wiki_image_load = Image.open('wiki_image.jpeg')
-
-                size_tup = wiki_image_load.size
-                wiki_img_load1 = wiki_image_load.resize((int(size_tup[0]/1.5) , int(size_tup[1]/1.5)))
-                wiki_img = ImageTk.PhotoImage(image = wiki_image_load)
-                l_w=tk.Label(frame,image = wiki_img,text=search)
-                l_w.image = wiki_img
-                l_w.grid(row=10,column=0)
-            except:
-                pass
-
-            rt=C.create_window(0,0,anchor=tk.N+tk.W,window=frame)
-
-            C.update()
-            root.update()
-            C.config(scrollregion=C.bbox('all'))'''
             
             #except:
             #    L.configure(text="i don't understand\nTry using specific keyword or do a google search \nelse please check your connection \n if your net connection is proper then try suing specific keywords\nlike type new york city for searching new york")
@@ -1922,7 +1839,7 @@ def parallellistner(recognizer, audio):
         # to use another API key (if you have) , use `r.recognize_google(audio, key="<google speech recognition api key you have>")
         #instead of 'r.recognize_google(audio)'   [this is default api key and has limited words per day (about 50)]
         if recognizer.recognize_google(audio) in ("listen","listening",'list') :
-            if int(check())>int((HEIGHT//1.6544117647058822)):
+            if int(root.wm_attributes("-alpha")*100) in range(22,28):
                 actu()
                 root.after(1,speech)
             else:
@@ -1965,110 +1882,4 @@ except:
     pass
 
 
-
-##print('closed')
-
-#-----------------------------------------------obsolate----------------------------------------------------------------------------#
-'''
-
-an inbuilt music player
-to be added in future versios
-
-
-import wave
-import pyaudio
-import struct as s
-filename = 'par.wav'
-
-
-chunk = 1024  
-
-# Open the sound file 
-wf = wave.open(filename, 'rb')
-
-
-p = pyaudio.PyAudio()
-
-# Open a Stream object to write the WAV file to
-
-stream = p.open(format = p.get_format_from_width(wf.getsampwidth()),
-                channels = wf.getnchannels(),
-                rate = wf.getframerate(),
-                output = True)
-
-# Read data in chunks
-data = wf.readframes(chunk)
-
-# Play the sound by writing the audio data to the stream
-while data != '':    
-    stream.write(data)
-    data = wf.readframes(chunk)
-    a=s.unpack("<{0}H".format(2*chunk),data)
-    ##print((abs(int(a[0]))))
-
-# Close and terminate the stream
-stream.close()
-
-p.terminate()
-wf.close()
-'''
-#-----------------------------------------------------------------
-'''
-    result = []  #####html parser for wikipedia parsing########
-    class MyHTMLParser(HTMLParser):
-        a = 0
-        mw_ct = False
-        img_found=False
-        flag=0
-
-        def getImage(self,addres):
-            img_url = ur.urlopen(addres)
-            data = img_url.read()
-            filen='wiki_image.jpeg'
-            wiki_img_file = open(filen, 'wb')
-            wiki_img_file.write(data)
-            wiki_img_file.close()
-
-        def handle_starttag(self, tag, attributes):
-            #global mw_ct
-            #global a
-            if ('id', 'mw-content-text') in attributes:
-                MyHTMLParser.mw_ct = True
-                ##print("yes")                                                       #for testing pupose the following comments are made
-            if MyHTMLParser.mw_ct == True:
-                if tag == "p" and (('class', 'mw-empty-elt') not in attributes):
-                    ##print("found")
-                    MyHTMLParser.a = 1
-                    ##print(a)
-            if tag=='table':
-                #if (('class', 'infobox vcard') in attributes) or (('class', 'infobox geography vcard') in attributes):
-                for i in attributes:
-                    if 'class'==i[0] and 'infobox' in i[1]:
-                        MyHTMLParser.img_found = True
-                        #print('found')
-            if MyHTMLParser.img_found == True and MyHTMLParser.flag==0:
-                if tag == 'img':
-                    #print('found1')
-                    for name,val in attributes:
-                        if name == 'src':
-                            #print('found2')
-                            self.getImage('https:'+val)
-                            MyHTMLParser.flag=1
-                            break
-        def handle_endtag(self, tag):
-            #global a
-            if MyHTMLParser.a == 1:
-                if tag == "/p":
-                    MyHTMLParser.a = 0
-            if MyHTMLParser.img_found == True:
-                if tag=='table':
-                    MyHTMLParser.img_found = False
-        def handle_data(self, data):
-            #global a
-            if MyHTMLParser.a == 1:
-                result.append(data)
-            if len(result) >= 50:
-                MyHTMLParser.a=0
-            #result.remove('\n')
-'''
 
