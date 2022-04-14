@@ -4,15 +4,6 @@
 ### edit works ###
 ### threading works ####
 ### coded by SIDDHARTH ACHARYA ###
-### initializer working######
-#initi too
-#parallel listner works_the_best
-#better rotating SA
-#image comes in wikipedia
-#new open algorithm
-#new height weihght algo
-#new calculator and timer
-# works with linux
 
 '''
 credits:
@@ -27,7 +18,7 @@ import subprocess
 import webbrowser
 import sys
 from wsgiref.util import request_uri
-#import platform
+
 import requests
 import json
 import threading as th
@@ -48,11 +39,6 @@ import math
 from bs4 import BeautifulSoup as beauty
 
 ######################################___platform specific stuff___#################################################
-
-#for OS_NAME in platform.uname():
-#    break
-
-#print(sys.argv[0])
 OSs={
     'darwin' : ('Mac','//'),
      'linux': ('Linux','//'),
@@ -63,22 +49,13 @@ OS_NAME = sys.platform
 for i in OSs:
     if i in OS_NAME:
         OS_NAME,sepr = OSs[i][0],OSs[i][1]
-'''
-sepr = {'Linux' : '//',
-        'Windows' : '\\',
-        'Darwin' : '//'}
 
-for ik in sepr:
-    if ik == OS_NAME:
-        sepr = sepr[ik]'''
 
-#print(OS_NAME,sepr)
 #######################################################################################################################
 
 db=sq.connect('SA.db')
 try:
     test_=db.execute("select command from commands where srid=21")
-    #print("PREASENT")
 except:
     db.execute("""create table commands(
 srid int primary key,
@@ -107,18 +84,17 @@ frequency int not null)
     db.execute("""insert into commands values(20,"close",1)""")
     db.execute("""insert into commands values(21,"thanks",0)""")
     db.commit()
-    #print("DONE")
-
-########machine learning
+     #done
+     
+#############---------machine learning-------------------#########################
 machience_learnt=db.execute("select command from commands order by frequency desc").fetchall()
-##print(machience_learnt)
+
 
 def addbt(commd):
     fetching_lastind=db.execute("select max(srid) 'max' from commands")
     lastind=int(fetching_lastind.fetchall()[0][0])+1 
     try:
         abt_=db.execute("select frequency from commands where command='{}'".format(str(commd)))
-        #print('h')
         value=int(abt_.fetchall()[0][0])
         value+=1
         db.execute("update commands set frequency={} where command='{}'".format(value,str(commd)))
@@ -131,7 +107,6 @@ def addbt(commd):
 ##################################################################################################################
 try:
     test_=db.execute("select commtype from tb")
-    #print("PREASENT")
 except:
     db.execute("""create table tb(
 id int primary key,
@@ -140,7 +115,6 @@ commtype varchar(20) not null,
 action varchar(90) not null)
 """)
     db.execute("insert into tb values(0,'','','')")
-    #print("made")
 def edit():
     edi=tk.Toplevel(root)
     editl1=tk.Label(edi, text="enter _new_ command")
@@ -166,7 +140,6 @@ def edit():
 
     def done():
         edind=int(db.execute("select max(id) 'max' from tb").fetchall()[0][0])+1
-        #print(edind)
         if strval.get() in ('tell','sa command'):
             db.execute("insert into tb values({},'{}','{}','{}')".format(edind,editentry1.get(),str(strval.get()),editentry2.get()))
             db.commit()
@@ -185,7 +158,6 @@ def edit():
 ################################################  search result learning  ##################################################################
 try:
     test_=db.execute("select command from store")
-    #print("PREASENT")
 except:
     db.execute("""create table store(
 id int primary key,
@@ -194,12 +166,8 @@ result varchar(100) not null)
 """)
     db.execute("insert into store values(0,'','')")
     db.commit()
-    #print("made")
-##print(db.execute("select * from store").fetchall())   ###for testing process
 def storeinfo(commd,reslt):
-    #print(db.execute("select max(id) 'max' from store").fetchall()[0][0])
     lind=int(db.execute("select max(id) 'max' from store").fetchall()[0][0])+1
-    #print(lind)
     db.execute("insert into store values({},'{}','{}')".format(lind,str(commd),str(reslt).replace('\'','')))
     db.commit()
 def delinfo(commd,reslt):
@@ -207,7 +175,6 @@ def delinfo(commd,reslt):
     minf,creq=int(db.execute("select min(frequency) 'min',command from commands").fetchall()[0][0]),db.execute("select min(frequency) 'min',command from commands").fetchall()[0][1]
     mind=int(db.execute("select min(id) 'min' from store").fetchall()[0][0])
     midf=((minf**2+lind**2)/2)**0.5
-    #print(lind)
                        
        
                               
@@ -226,7 +193,6 @@ def checkinfo(commd):
         return 1
     else: return 0
 def getresult(commd):
-    #print("called")
     infot=db.execute("select command, result from store").fetchall()
     for dist in infot:
         if dist[0]==commd:
@@ -280,45 +246,7 @@ for i in range(0,72):
     rlabel.configure(image = SA_PH)
     rinit.update()
     
-'''
-threading module___to be implemented in the next update
-def load():
-    global s
-    for i in range(45,72):
-        s.append(tk.PhotoImage(file=p_ath+sepr+"graphics00{}.png".format(i)))
-    #print('done1')
-
-def disp():
-    i=0
-    while i<72:
-        if len(s)<i:
-            #print(len(s),i)
-        rlabel.configure(image=s[i])
-        rinit.update()
-        #s[i] = 0 if i!=71 else s[i]
-        i+=1       
-    #root.deiconify()    #making the rootwindow appear
-    #root.update()       #updating root window
-    s.clear()
-    rinit.quit()        #this will cause the interpreter to move to the next line of mainloop(of toplevel) although the mainloop will still be running in background
-    
-    
-    
-    #but since quit() doesn't stop the mainloop the toplevel window won't get destroyed and still be appearing, while the interpreter would have moved forward.
-    #print('done2')#for testing purpose to see if the thread has been destroyed or not
-        
-
-th1=th.Thread(target=load)
-th1.start()   # this thread needn't be terminated, it will automaticallly get terminatedupon compleation of loop
-th2=th.Thread(target=disp)
-th2.setDaemon(1) #this thread might not get terminated therefore setting daemon will terminate it as soon as the toplevel window is destroyed
-th2.start()
-
- 
-rinit.mainloop() ###mainloop of toplevel###
-'''
-rinit.destroy()  #after rinit.quit() the interpreter will run this line and since the mainloop(of toplevel) is still running and this would destoy the mainloop and as a result close the toplevel window 
-
+rinit.destroy()  
 
 root.deiconify()    #making the rootwindow appear
 root.update()       #updating root window
@@ -326,10 +254,8 @@ root.update()       #updating root window
 
 root.attributes('-topmost',1)  #the root will always be at top
 
-##print('th1',th1.is_alive() ,'th2', th2.is_alive())
 
 mt2 = time.time()
-#print(mt2-mt1)
 
 ########################--the functions for making the window come out and go down(only transparent enabled in linux)--####################################
 al=0.50 if OS_NAME=='Windows' else 1
@@ -369,7 +295,6 @@ def actu():
                     time.sleep(0)
                 if a==False:
                     time.sleep(0)
-            #root.attributes('-topmost',0)
         else:
             for i in range(0,int(HEIGHT*0.9777777777777777/5)):
                 if i>=300:
@@ -395,9 +320,7 @@ def actu():
             root.wm_attributes('-alpha',al)
             root.update()
             time.sleep(0.001)
-            
-        ##print(int(al*100),sign_const)
-        
+                    
     
 cut=tk.Button(root, bg='red', fg='white',relief='flat', text="x", command=actu)
 cut.grid(row=0, column=1)
@@ -486,7 +409,6 @@ class but:     #open sugesstions buttons
         self.b=tk.Button(frm, text=self.text+'\n'+self.link_, fg='gray', bg='white', command=self.for_open, relief='flat', width=48, wraplength=288)
         self.b.pack()
     def for_open(self):
-        #print(start_menu_path[0],self.link)
         if OS_NAME == 'Windows':os.startfile(self.link)                
         else: os.system('cd {}; gtk-launch {}'.format(start_menu_path[0],self.link))
 
@@ -537,7 +459,6 @@ class wiki_com: #for showing wikipedia data
 def google_search(new_n):
     n2.delete(0,tk.END)
     new_n = new_n.replace(' ','+')
-    #print(new_n)
     url = f"https://www.google.com/search?source=hp&ei=D21vXovxGvzez7sPwPyquAQ&q="+str(new_n)  
     stri = ur.Request(url,headers={'User-Agent': 'chrome.exe'})
     req= ur.urlopen(stri) 
@@ -552,15 +473,12 @@ def google_search(new_n):
 
     anchors = soup.findAll('a')
 
-    #anchors=soup.find(id='search').findall('a')
 
     for link in anchors:
         if link['href'].startswith('/url'):
             results_[link.get_text()]=link['href']
-        ##print(link.get_text())
 
-    #for i in results:
-        ##print(i,"  :::::   ",results[i].lstrip('/url?q='))
+    
     C.grid(row=10,column=0)
     scc.grid(row=10,column=1,sticky=tk.N+tk.S)
     frame=tk.Frame(C, bg='yellow')
@@ -664,7 +582,6 @@ def wsearch(i):   #search a particular word(this searches the word in articles t
     ap = api_call(PARAMS)
     ap = [i['title'] for i in ap['query']['search']]
     
-    ##print(ap)
     gl = ap
 #_________________________________________________________________________________
 
@@ -719,7 +636,6 @@ def get_pic(i, photoname, thumb_size=None):   #getting thumbnail pictures
 #___________________________________________________________________________________
 
 def wget(i,mode=None):   #getting extracts
-    ##print('called')
     PARAMS = {
     'action': 'query',
     'format':'json',
@@ -754,11 +670,7 @@ def enter(entry,event = None):
     #entry = n2.get()
     
     if entry.rstrip(' ').lower() == searched.lower(): #user was doing wiki open search before seeing results
-        '''
-        for i in gl:
-            if searched.lower() in i.lower():
-                cont_var += 1
-        if cont_var >= 3:'''
+        
         threads = []
         index = 0
         for i in gl[0:3]:
@@ -766,9 +678,7 @@ def enter(entry,event = None):
             threads[index][0].start()
             threads[index][1].start()
             index += 1
-        '''
-        elif cont_var in range(1,3):
-                page_get = wget(entry,1)'''
+        
             
             
     else:  #user didn't do a wiki open search before seeing results
@@ -815,7 +725,6 @@ class autocomplete:
         scc.grid(row=10,column=1,sticky=tk.N+tk.S)
         self.frame_w=tk.Frame(C, bg='yellow') 
         
-        ##print(gsd)
         multiplier=0 if self.mode==None else 1
         output=wiki_com(self.frame_w,self.title_name,gsd[self.title_name]['extract'][:500*(multiplier+1)],gsd[self.title_name]['pic'],self.mode)
         output.fun()
@@ -858,7 +767,6 @@ def gett():
                     try:
                         if ag[0]==' ' and len(ag)==2: ag = ag[1:]
                     except IndexError:
-                        #print(ag)
                         pass
                     break
             else:
@@ -866,14 +774,12 @@ def gett():
                     ag = ag_mod.replace('meaning+of','')
                     truth=2
             if to_be_searched_thread_flag==0:
-                ##print(counter_var,ag)
                 if counter_var.replace(' ','')!=ag.replace(' ',''):
                     to_be_searched_thread_flag=1
             
             if truth != 0:
                 truth = None if truth==1 else 1
                 if count_var == 10:
-                    ##print(ag)
                     count_var = 0
                     
                     if ag.endswith(' '): ag = ag[:len(ag)-1]
@@ -881,7 +787,6 @@ def gett():
                     if ag != searched:
                         
                         
-                        ##print('found',ag)
                         if to_be_searched_thread_flag==1:
                             t1 = th.Thread(target = open_search , args = (ag,truth))
                             searched = ag
@@ -917,9 +822,7 @@ def gett():
                             L.config(text='')
                             C.grid(row=10,column=0)
                             scc.grid(row=10,column=1,sticky=tk.N+tk.S)
-                            #print('do')
                             if to_be_searched_thread_flag == 1 :
-                                print('done',to_be_searched_thread_flag)
                                 C.delete('all')
                                 frame_w=tk.Frame(C, bg='yellow') 
                                 for i in autocomplete_list:
@@ -1014,7 +917,6 @@ def main(n):  #main function of the software does everything
     if ("voice") in n:
         try:
             with sr.Microphone() as source:
-                #print("speak: ")
                 q = r.listen(source)
                 n=str(r.recognize_google(q))
                 L.configure(text=n)
@@ -1027,7 +929,6 @@ def main(n):  #main function of the software does everything
         addbt(n)
         edit()
     elif [i[1] for i in extraf].count(n)!=0:
-        #print("YES..")
         d=[i[1] for i in extraf].index(n)
         extraf2=[d[3] for d in extraf]
         if [z[2] for z in extraf][d]=="tell":
@@ -1037,7 +938,6 @@ def main(n):  #main function of the software does everything
             main(extraf2[d])
         elif [z[2] for z in extraf][d]=="open":
             L.configure(text="opening...")
-            #print(str(extraf2[d]))
             if 'open' in n: os.startfile(str(extraf2[d]).replace('?','\\'))
             elif 'open' not in n: main('open '+n)
     elif n==("good morning"):
@@ -1316,7 +1216,6 @@ def main(n):  #main function of the software does everything
                     board[1][2]="O"
                 else:
                     gameover.configure(text="Game Over")
-                    #print(board)
 
                 if checkrow()==True:
                     if board[a][0]=="O" and board[a][1]=="O" and board[a][2]=="O":
@@ -1584,10 +1483,7 @@ def main(n):  #main function of the software does everything
     elif ("open") in n:
         addbt(n)
         n=n.replace('open ','')
-        '''
-        if n.lower() == 'notepad':
-            os.popen('notepad.exe')
-            L.configure(text="opening")'''
+        
 
         suggestions={}
         relevance_list=[]
@@ -1611,7 +1507,6 @@ def main(n):  #main function of the software does everything
                 
         if len(relevance_list)==1:
             L.config(text = 'opening '+relevance_list[0])            
-            ##print(start_menu_path[0],self.link())
             if OS_NAME == 'Windows': os.startfile(start_menu_progs[relevance_list[0]])            
             else: os.system('cd {}; gtk-launch {}'.format(start_menu_path[0],start_menu_progs[relevance_list[0]]))
             relevance_list.clear()
@@ -1697,54 +1592,7 @@ def main(n):  #main function of the software does everything
         C.update()
         root.update()
         C.config(scrollregion=C.bbox('all'))
-        '''
-        tobeshown=[]
-        if " " in n:
-            n=n.replace(' ','')
-        n=n.replace('meaning','')
-        if "of" in n:
-            n=n.replace('of',"")
-        #print(n)
-        storcom=n
-        if checkinfo(n)==1:
-            #print('found..')
-            tobeshown=getresult(n)
-            if "???" in tobeshown:
-                tobeshown=tobeshown.split("???")
-            else:
-                tobeshown=tobeshown.split(" ")
-        else:
-            results=[]
-            mm=str(n)
-            if " " in mm:
-                mm=mm.replace(" ", "+")
-            req = ur.Request(("https://www.dictionary.com/browse/"+str(mm)), headers={'User-Agent': 'chrome.exe'})
-            string=req
-            a_=ur.urlopen(string)
-            soup=beauty(str(a_.read()), 'html5lib')
-            anchors = soup.findAll('div', class_='css-1uqerbd e1hk9ate0')
-            for link in anchors:
-                results.append(link.get_text())
-            for i in results:
-                for j in i.split('.'):
-                    tobeshown.append(j)
-            
-            ## tobestored  for storing
-            tobestored=[]
-            for i in tobeshown:
-                if i.startswith('.c') != 1: ##.com creates problem while storing in database
-                    i+="\n"
-                    tobestored.append(i)
-
-            storeinfo(storcom,"???".join(tobestored))
-
-        scr.grid(row=9,column=1, sticky=tk.S+tk.N)
-        T.grid(row=9,column=0)
-        L.configure(text='here we go')
-        for i in tobeshown:
-            #if i.startswith('.c') != 1: 
-            i+="\n"
-            T.insert(tk.END, '●'+str(i))'''
+        
 ###################################################################################################################       
     else:
         if 'wh' in n:
@@ -1794,102 +1642,7 @@ def main(n):  #main function of the software does everything
             C.update()
             root.update()
             C.config(scrollregion=C.bbox('all'))
-            '''
-            if len(result)>=0:
-                result = []
-            #try:
-            ask=0
-            if "what is" in n:
-                addbt(n)
-                L.configure(text=" ")
-                search=n.replace('what is ','')
-            elif "who is" in n:
-                addbt(n)
-                L.configure(text=" ")
-                search=n.replace('who is ','')
-            elif "where is" in n:
-                addbt(n)
-                L.configure(text=" ")
-                search=n.replace('where is ','')
-            else:
-                pass
-            search=search.title()
-            search=search.replace(" ","_")
-            if checkinfo(search)==1:
-                k1=getresult(search)
-            else:
-                wiki_parser = MyHTMLParser()
-                req = ur.Request(("https://en.wikipedia.org/wiki/"+str(search)), headers={'User-Agent': 'chrome.exe'})
-                string=req
-                a_=ur.urlopen(string)
-                n_=str(a_.read())
-                wiki_parser.feed(n_)
-                for i in result:
-                    if '\n' in i:
-                        i.replace('\n','')
-                    if "pronunciation" in i:
-                        result.remove(i)
-                    if i.count('x')>=2:
-                        result.remove(i)
-                ret = ''.join(result)
-                ki = ret
-                k1=ki[:40]
-                k1=k1#+'\n'
-                k1+=ki[40:80]
-                #k1+='\n'
-                k1+=ki[80:120]
-                #k1+='\n'
-                k1+=ki[120:160]
-                #k1+='\n'
-                k1+=ki[160:200]
-                #k1+='\n'
-                storeinfo(search, k1)
-                wiki_parser.close()####
-
-            C.grid(row=10,column=0)
-            scc.grid(row=10,column=1,sticky=tk.N+tk.S)
-            frame=tk.Frame(C, bg='yellow')                
             
-
-            def whatwherewho():
-                webbrowser.open("https://en.wikipedia.org/wiki/"+str(search))
-                L.configure(text="let me search")
-                try:
-                    newbutton.grid_forget()
-                    closebut.grid_forget()
-                except:
-                    pass
-            frame=tk.Frame(C, bg='yellow')
-
-            #the button that comes while wikepedia searching
-            newbutton=tk.Button(frame, text="",bg="yellow", height=8, width=50, wraplength=300)
-            newbutton.grid(row=0,column=0, columnspan=4, rowspan=6, stick = tk.W+tk.E)
-            newbutton.configure(text=str(k1)+".......wikipedia", command=whatwherewho)
-
-            def closing():
-                C.grid_forget()
-
-            closebut=tk.Button(frame, text="close", fg="white", bg="red")#but comes along with the newbutton
-            closebut.configure(command=closing)
-            closebut.grid(row=6, column=0, stick=tk.S+tk.E)
-
-            try:
-                wiki_image_load = Image.open('wiki_image.jpeg')
-
-                size_tup = wiki_image_load.size
-                wiki_img_load1 = wiki_image_load.resize((int(size_tup[0]/1.5) , int(size_tup[1]/1.5)))
-                wiki_img = ImageTk.PhotoImage(image = wiki_image_load)
-                l_w=tk.Label(frame,image = wiki_img,text=search)
-                l_w.image = wiki_img
-                l_w.grid(row=10,column=0)
-            except:
-                pass
-
-            rt=C.create_window(0,0,anchor=tk.N+tk.W,window=frame)
-
-            C.update()
-            root.update()
-            C.config(scrollregion=C.bbox('all'))'''
             
             #except:
             #    L.configure(text="i don't understand\nTry using specific keyword or do a google search \nelse please check your connection \n if your net connection is proper then try suing specific keywords\nlike type new york city for searching new york")
@@ -1933,27 +1686,22 @@ def parallellistner(recognizer, audio):
             else:
                 root.after(1,speech)
     except sr.UnknownValueError:
-        #print("-")
         pass
     except sr.RequestError as e:
         pass
-        #print("Could not request results from Google Speech Recognition service; please check internet connection {0}".format(e))
 
 try:
     r_par = sr.Recognizer()
     m_par = sr.Microphone()
     with m_par as source:
         r_par.adjust_for_ambient_noise(source)
-        #print('listening')# we only need to calibrate once, before we start listening
 
     # started listening in the background 
     stop_listening = r_par.listen_in_background(m_par, parallellistner,3)
     # `stop_listening` is now a function that, when called, stops background listening
 except:
-    #print('please ensure speech recognition is installed')
     pass
 
-#s.clear()
 entry_monitor.start()
 
 root.mainloop()       
@@ -1966,114 +1714,8 @@ except:
 try:
     db.close()
 except:
-    ##print('already closed')
     pass
 
 
 
-##print('closed')
-
-#-----------------------------------------------obsolate----------------------------------------------------------------------------#
-'''
-
-an inbuilt music player
-to be added in future versios
-
-
-import wave
-import pyaudio
-import struct as s
-filename = 'par.wav'
-
-
-chunk = 1024  
-
-# Open the sound file 
-wf = wave.open(filename, 'rb')
-
-
-p = pyaudio.PyAudio()
-
-# Open a Stream object to write the WAV file to
-
-stream = p.open(format = p.get_format_from_width(wf.getsampwidth()),
-                channels = wf.getnchannels(),
-                rate = wf.getframerate(),
-                output = True)
-
-# Read data in chunks
-data = wf.readframes(chunk)
-
-# Play the sound by writing the audio data to the stream
-while data != '':    
-    stream.write(data)
-    data = wf.readframes(chunk)
-    a=s.unpack("<{0}H".format(2*chunk),data)
-    ##print((abs(int(a[0]))))
-
-# Close and terminate the stream
-stream.close()
-
-p.terminate()
-wf.close()
-'''
-#-----------------------------------------------------------------
-'''
-    result = []  #####html parser for wikipedia parsing########
-    class MyHTMLParser(HTMLParser):
-        a = 0
-        mw_ct = False
-        img_found=False
-        flag=0
-
-        def getImage(self,addres):
-            img_url = ur.urlopen(addres)
-            data = img_url.read()
-            filen='wiki_image.jpeg'
-            wiki_img_file = open(filen, 'wb')
-            wiki_img_file.write(data)
-            wiki_img_file.close()
-
-        def handle_starttag(self, tag, attributes):
-            #global mw_ct
-            #global a
-            if ('id', 'mw-content-text') in attributes:
-                MyHTMLParser.mw_ct = True
-                ##print("yes")                                                       #for testing pupose the following comments are made
-            if MyHTMLParser.mw_ct == True:
-                if tag == "p" and (('class', 'mw-empty-elt') not in attributes):
-                    ##print("found")
-                    MyHTMLParser.a = 1
-                    ##print(a)
-            if tag=='table':
-                #if (('class', 'infobox vcard') in attributes) or (('class', 'infobox geography vcard') in attributes):
-                for i in attributes:
-                    if 'class'==i[0] and 'infobox' in i[1]:
-                        MyHTMLParser.img_found = True
-                        #print('found')
-            if MyHTMLParser.img_found == True and MyHTMLParser.flag==0:
-                if tag == 'img':
-                    #print('found1')
-                    for name,val in attributes:
-                        if name == 'src':
-                            #print('found2')
-                            self.getImage('https:'+val)
-                            MyHTMLParser.flag=1
-                            break
-        def handle_endtag(self, tag):
-            #global a
-            if MyHTMLParser.a == 1:
-                if tag == "/p":
-                    MyHTMLParser.a = 0
-            if MyHTMLParser.img_found == True:
-                if tag=='table':
-                    MyHTMLParser.img_found = False
-        def handle_data(self, data):
-            #global a
-            if MyHTMLParser.a == 1:
-                result.append(data)
-            if len(result) >= 50:
-                MyHTMLParser.a=0
-            #result.remove('\n')
-'''
 
