@@ -40,10 +40,11 @@ def main_funct():
     req=t.get( '1.0' , tk.END )
     diction={
     'log(':'m.log(',
+    'log₁₀(':'m.log10(',
     '^':'**',
-    'asin(':'matfun({},m.asin,'.format(v),
-    'acos(':'matfun({},m.acos,'.format(v),
-    'atan(':'matfun({},m.atan,'.format(v),
+    'sin⁻(':'matfun({},m.asin,'.format(v),
+    'cos⁻(':'matfun({},m.acos,'.format(v),
+    'tan⁻(':'matfun({},m.atan,'.format(v),
     'sin(':'matfun({},m.sin,'.format(v),    
     'cos(':'matfun({},m.cos,'.format(v),    
     'tan(':'matfun({},m.tan,'.format(v),    
@@ -51,6 +52,19 @@ def main_funct():
     'e':'m.e',
     'factorial(':'m.factorial(',
     'sqrt(':'m.sqrt('}
+    
+    old_req = req
+    for j in range(len(req)):
+        if '0'<=req[j]<='9':
+            if ('a'<=req[j+1]<='z') or (req[j+1]=='('):
+                req = req[:j+1]+'*'+req[j+1:]
+        if req[j]== ')':
+            if (req[j+1] == '(') or ('0'<=req[j+1]<='9') or ('a'<=req[j+1]<='z'):
+                req = req[:j+1]+'*'+req[j+1:]
+    if old_req!=req:
+        t.delete('1.0',tk.END)
+        t.insert('1.0',req)
+    
     for i in diction:
         if i in req:
             req=req.replace(i,diction[i])
@@ -68,16 +82,17 @@ frm.pack()
 
 
 class but:
-    def __init__(self,n,r,c,m=0):
-        self.n=n
-        self.r=r
-        self.c=c
+    def __init__(self,n,r,c,m=0): # m is what the but actually enters in the Text box(it may be different than what is there in the but)
+        self.n=n  #this is what shows up on the button
+        self.r=r  #grid row
+        self.c=c  #grid column
         self.m=m
         self.b=tk.Button(frm,text=self.n,font='Times 25',relief='flat',command=self.com)
         self.b.grid(row=self.r,column=self.c)
     def com(self):
         if self.m!=0:
             self.n=self.m
+
         keyb=p()
         keyb.type(str(self.n))
         #t.insert(tk.END,self.n)
@@ -99,21 +114,22 @@ but('(',4,4)
 but('ln',1,5,'log(')
 but('^',1,6)
 but('sin',2,5,'sin(')
-but('rsin',2,6,'asin(')
+but('sin⁻',2,6,'sin⁻(')
 but('cos',3,5,'cos(')
-but('rcos',3,6,'acos(')
+but('cos⁻',3,6,'cos⁻(')
 but('tan',4,5,'tan(')
-but('rtan',4,6,'atan(')
+but('tan⁻',4,6,'tan⁻(')
 but('π',5,1,'pi')
 but('e',5,2)
-but('log10',5,3,'log(,10')
+but('log₁₀',5,3,'log₁₀(')
 but('!',5,4,'factorial(')
-but('loga',5,5,'log(,a')
+but('logₐ',5,5,'log(,a')
 but('√',5,6,'sqrt(')
 
 f=tk.Frame(mat)
 f.pack(side='right')
 
+#---for integrations and summations-----
 class topl:
     def __init__(self,opt):
         self.toplevel=tk.Toplevel(mat)
