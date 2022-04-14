@@ -1,8 +1,3 @@
-### version 9 of SA intelligent system ###
-### meaning works ###
-### machiene learning ###
-### edit works ###
-### threading works ####
 ### coded by SIDDHARTH ACHARYA ###
 
 '''
