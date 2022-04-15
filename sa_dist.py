@@ -1,18 +1,4 @@
-### version 9 of SA intelligent system ###
-### meaning works ###
-### machiene learning ###
-### edit works ###
-### threading works ####
-### coded by SIDDHARTH ACHARYA ###
-### initializer working######
-#initi too
-#parallel listner works_the_best
-#better rotating SA
-#image comes in wikipedia
-#new open algorithm
-#new height weihght algo
-#new calculator and timer
-# works with linux
+#coded by siddharth
 
 '''
 credits:
@@ -1696,7 +1682,23 @@ def main(n):  #main function of the software does everything
         scc.grid(row=10,column=1,sticky=tk.N+tk.S)
         frame_w=tk.Frame(C, bg='yellow') 
         
-        output_=wiki_com(frame_w,n,gsd[n]['extract'][:500*2],None,1)
+        #editing the data a little before putting in butoon
+        raw_data = gsd[n]['extract'][:500*2]
+        data_to_be_put = ""
+        if 'English' in raw_data:
+            raw_data = raw_data.replace(' English ','=English=')
+        raw_data = raw_data.replace('===','?=?')
+        ind = 2
+        for i in raw_data.split('?'):
+            if i == '=':
+                ind = ind+1 if ind<2 else ind
+            if i == 'English': ind =0
+            if i.replace(' ','').replace('1','') == 'Etymology': ind = 0
+            if i.replace(' ','') == 'Pronunciation': ind =0
+            if ind==2:
+                if i!= '=' : data_to_be_put+=i
+
+        output_=wiki_com(frame_w,n,data_to_be_put,None,1)
         output_.fun()
         
         rt=C.create_window(0,0,anchor=tk.N+tk.W,window=frame_w)
@@ -1704,54 +1706,7 @@ def main(n):  #main function of the software does everything
         C.update()
         root.update()
         C.config(scrollregion=C.bbox('all'))
-        '''
-        tobeshown=[]
-        if " " in n:
-            n=n.replace(' ','')
-        n=n.replace('meaning','')
-        if "of" in n:
-            n=n.replace('of',"")
-        #print(n)
-        storcom=n
-        if checkinfo(n)==1:
-            #print('found..')
-            tobeshown=getresult(n)
-            if "???" in tobeshown:
-                tobeshown=tobeshown.split("???")
-            else:
-                tobeshown=tobeshown.split(" ")
-        else:
-            results=[]
-            mm=str(n)
-            if " " in mm:
-                mm=mm.replace(" ", "+")
-            req = ur.Request(("https://www.dictionary.com/browse/"+str(mm)), headers={'User-Agent': 'chrome.exe'})
-            string=req
-            a_=ur.urlopen(string)
-            soup=beauty(str(a_.read()), 'html5lib')
-            anchors = soup.findAll('div', class_='css-1uqerbd e1hk9ate0')
-            for link in anchors:
-                results.append(link.get_text())
-            for i in results:
-                for j in i.split('.'):
-                    tobeshown.append(j)
-            
-            ## tobestored  for storing
-            tobestored=[]
-            for i in tobeshown:
-                if i.startswith('.c') != 1: ##.com creates problem while storing in database
-                    i+="\n"
-                    tobestored.append(i)
-
-            storeinfo(storcom,"???".join(tobestored))
-
-        scr.grid(row=9,column=1, sticky=tk.S+tk.N)
-        T.grid(row=9,column=0)
-        L.configure(text='here we go')
-        for i in tobeshown:
-            #if i.startswith('.c') != 1: 
-            i+="\n"
-            T.insert(tk.END, '●'+str(i))'''
+        
 ###################################################################################################################       
     else:
         if 'wh' in n:
@@ -1839,11 +1794,11 @@ def parallellistner(recognizer, audio):
         # to use another API key (if you have) , use `r.recognize_google(audio, key="<google speech recognition api key you have>")
         #instead of 'r.recognize_google(audio)'   [this is default api key and has limited words per day (about 50)]
         if recognizer.recognize_google(audio) in ("listen","listening",'list') :
-            if int(root.wm_attributes("-alpha")*100) in range(22,28):
-                actu()
-                root.after(1,speech)
+            if int(root.wm_attributes("-alpha")*100) in range(80,100):
+                root.after("idle",speech)
             else:
-                root.after(1,speech)
+                actu()
+                root.after("idle",speech)
     except sr.UnknownValueError:
         #print("-")
         pass
