@@ -1579,7 +1579,23 @@ def main(n):  #main function of the software does everything
         scc.grid(row=10,column=1,sticky=tk.N+tk.S)
         frame_w=tk.Frame(C, bg='yellow') 
         
-        output_=wiki_com(frame_w,n,gsd[n]['extract'][:500*2],None,1)
+        #editing the data a little before putting in butoon
+        raw_data = gsd[n]['extract'][:500*2]
+        data_to_be_put = ""
+        if 'English' in raw_data:
+            raw_data = raw_data.replace(' English ','=English=')
+        raw_data = raw_data.replace('===','?=?')
+        ind = 2
+        for i in raw_data.split('?'):
+            if i == '=':
+                ind = ind+1 if ind<2 else ind
+            if i == 'English': ind =0
+            if i.replace(' ','').replace('1','') == 'Etymology': ind = 0
+            if i.replace(' ','') == 'Pronunciation': ind =0
+            if ind==2:
+                if i!= '=' : data_to_be_put+=i
+
+        output_=wiki_com(frame_w,n,data_to_be_put,None,1)
         output_.fun()
         
         rt=C.create_window(0,0,anchor=tk.N+tk.W,window=frame_w)
@@ -1675,11 +1691,11 @@ def parallellistner(recognizer, audio):
         # to use another API key (if you have) , use `r.recognize_google(audio, key="<google speech recognition api key you have>")
         #instead of 'r.recognize_google(audio)'   [this is default api key and has limited words per day (about 50)]
         if recognizer.recognize_google(audio) in ("listen","listening",'list') :
-            if int(check())>int((HEIGHT//1.6544117647058822)):
-                actu()
-                root.after(1,speech)
+            if int(root.wm_attributes("-alpha")*100) in range(80,100):
+                root.after("idle",speech)
             else:
-                root.after(1,speech)
+                actu()
+                root.after("idle",speech)
     except sr.UnknownValueError:
         pass
     except sr.RequestError as e:
